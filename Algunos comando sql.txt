@@ -1,0 +1,41 @@
+Select upper('hola'), -- MAYUSCULAS
+       lower('hola'), -- MINISCULAS
+       initcap('Buenos dias'), --PONE EN MAYUS LAS PRIMERAS LETRAS
+       substr('caracol',6,2), -- BUSCA LETRAS POR INDICE
+       TRIM('                hola           '), -- SACA LOS ESPACIOS EN BLANCO
+       length('amermelaoh') -- Cuenta los caracteres de un STR
+from dual;
+
+select first_name,
+        length(first_name),
+        instr(first_name, 'e'),
+        replace(first_name, 'u','holaaa'), -- Reemplaza caracteres 
+        concat('anita','fuentes'), -- Concadena terminos
+        'anita' || ' fuentes'
+from employees;
+
+-- Ejemplo Para la cracion de un mail
+select first_name as Primer_nombre, last_name as Segundo_Nombre,
+        first_name || '.' || last_name || '@HR.com' as email ,
+        substr(first_name,-2,1) as penultimo_car, 
+        substr(first_name,length(first_name)-1,1)
+from employees;
+
+
+select 7000.459, round(7000.548), round(700.556), round(700.456,1), -- Round Redondea las cifras
+        trunc(700.556), trunc(700.556,3), -- TRUNC Trunquea las cifras
+        mod(10,3), -- Muestra el resto de una division
+        10/3 --cociente
+from dual;
+
+select sysdate, months_between('31-07-22','01-01-22'), -- Sysdate muestra la fecha actual, y el codigo de esta linea muentra 
+        add_months('28-02-22',2), -- Esta linea agrega 2 meses a la fecha asignada
+        add_months('28-02-22',-2) -- Esta linea descuenta 2 meses a la fecha asignada
+
+from dual;
+
+-- Ejemplo calcular meses que lleva empleado un trabajador de la tabla employees
+select first_name, hire_date,
+        sysdate as Fecha_Actual,
+        trunc(Months_between(sysdate,hire_date))as Meses_Empleado
+from employees;
