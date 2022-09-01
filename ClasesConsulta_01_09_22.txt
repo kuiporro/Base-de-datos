@@ -1,0 +1,63 @@
+SELECT  employee_id,
+        job_id, 
+        department_id, 
+        salary,
+        CASE  job_id  
+                WHEN 'PR_REP' THEN 1.15*salary
+                WHEN 'MK_MAN' THEN 1.20*salary
+        ELSE 'excelente'
+        END "Salario Incrementado"
+FROM employees
+WHERE department_id IN(70, 20, 110);
+
+
+SELECT last_name, salary,  
+              CASE WHEN salary >= 1000 and salary <= 3000 THEN  'Bajo' -- Aqui podemos tomar decisiones mediante el when(Cuando) y el then(Supongo) 
+                   WHEN salary > 3000 and salary <= 6000 THEN 'Medio' -- el "and" funciona para el "Y" 
+                   WHEN salary > 6000 THEN 'Bueno'
+                ELSE 'No aplica' 
+                END "Calificación del Salario"
+FROM employees
+WHERE department_id IN(60,90)
+ORDER BY salary DESC;
+
+
+select first_name,
+        case when first_name = 'Steven' then 'Esteban'
+             when first_name = 'Allan' then 'Alan'
+             when first_name = 'Michael' then 'Miguel'
+        else 'No tiene traduccion'
+        
+        end "Traductor de nombres"
+from employees;
+
+
+select first_name from employees;
+
+
+
+SELECT last_name, salary,  
+              CASE WHEN salary between 3000 and 6000 then 'Bajo' -- Aqui podemos tomar decisiones mediante el when(Cuando) y el then(Supongo) 
+                   WHEN salary between 6001 and 9000 THEN 'Medio' -- el "and" funciona para el "Y" 
+                   WHEN salary > 9000 THEN 'Bueno' -- el Between sirve para buscar informacion en cierto rago determinado
+                ELSE 'No aplica' 
+                END "Calificación del Salario"
+FROM employees
+
+ORDER BY salary asc;
+
+
+
+
+
+
+select department_name,
+
+       decode(
+              department_name,
+              'Administration','administracion', 
+              'Human Resources','Recursos Humanos',
+              'Sales','Ventas',
+              'No aplica'
+             ) as traduccion
+from departments;
