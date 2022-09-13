@@ -1,0 +1,44 @@
+select max(salary), min(salary), sum(salary),count(salary) -- en este caso el MAX(SALARY), saca el salario mayor de la tabla employees, el MIN(SALARY) el min
+from employees;                                            -- y el COUNT(SALARY) cuenta cuantos salarios hay en total por filas.
+
+
+select min(first_name), max(first_name),min(hire_date),max(hire_date) -- aqui al ser caso de trabajar con caracteres, cuenta el MIN como la letra
+from employees;                                             -- mas cerca de la A y el MAX el mas cerca de la Z.
+
+
+/*
+    Count(*): retorna el numero de filas que satisfacen el ceoterop de la sentencia select incluyendo filas duplicadas y filas que contengan valores
+    NUlos en cualquiera de sus columnas.
+    
+    Count(columnaExpresion): retorna el numero de filas que poseen valores  NO nulos en la columnade la tabla  o expresión.
+
+
+*/ 
+
+select count(*), count(commission_pct)
+from employees;
+
+
+select avg(commission_pct), avg(nvl(commission_pct,0)) --Avg Procesa por grupos y el AVL por filas.
+from employees;
+
+select count(department_id), count(distinct deparment_id), count(distinct nvl(department_id,0))
+from employees; -- algo mal esta aqui. 
+
+-- GROUP BY
+
+select department_id
+from employees
+group by department_id;
+
+select job_id, last_name -- Cuando se quiere agrupar mas de 1 tabla, 
+from employees
+group by job_id, last_name -- En esta linea igual se debe poner. AL PONER LAS 2 TABLAS SE DESORDENA, TENER CUIDADO CON ESO,
+order by job_id; -- PERO SE ARREGLA CON ESTE CODIGO.
+
+
+--Entonces ¿Como sacar el promedio por cada departamento?
+select department_id, round(avg(salary)) salario_promedio_x_depto  -- El avg en este caso esta sacando el promedio.
+from employees
+group by department_id; 
+
