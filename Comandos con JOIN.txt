@@ -1,0 +1,51 @@
+-- JOIN WITH ON
+select emp.first_name, --siempre definir el nombre de l tabla!!! :D 666
+       dep.department_name
+from employees emp -- podemos definir el nombre de las tablas y despues llamarlas con ese nombre. en este caso "EMP" para employees y "DEP" para departments.
+join departments dep -- Para añadir una tabla mas a la principal
+on emp.department_id = dep.department_id;
+
+
+
+select emp.first_name,
+       emp.salary,
+       jbs.max_salary,
+        jbs.job_title
+from employees emp
+join jobs jbs
+on emp.job_id = jbs.job_id;
+
+-- JOIN WITH USING
+
+select emp.first_name,
+       dep.department_name
+from employees emp
+join departments dep
+using(department_id); -- USING NO PERMITE AGREGAR EXPRESIONES, SOLO SE COLOCA LA TABLA COMUN NADA MAIS. 666
+-- on emp.department_id = dep.department_id; 777
+
+select emp.first_name,
+       emp.salary,
+       jbs.max_salary,
+        jbs.job_title
+from employees emp
+join jobs jbs
+using(job_id); -- NO ANTEPONER EL NOMBRE DE LA TABLA!!!!! 
+--on emp.job_id = jbs.job_id;
+
+-- NATURAL JOIN
+
+select street_address,
+       country_name
+from locations
+natural join countries;
+
+-- filtros 
+
+select emp.first_name,
+       dep.department_name
+from employees emp
+join departments dep
+on emp.department_id = dep.department_id
+where dep.department_id in (20,40,60); -- es recomendable buscar por id que por nombres por rapidez.
+--where dep.department_name in ('Marketing','Human Resources','IT'); 
