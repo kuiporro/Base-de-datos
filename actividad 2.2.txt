@@ -1,0 +1,18 @@
+
+select  to_char(cli.numrun,'09G999G999') ||'-'|| cli.dvrun "RUN CLIENTE",
+        initcap(cli.pnombre) ||' '|| initcap(cli.snombre) ||' '|| initcap(cli.appaterno) ||' '|| initcap(cli.apmaterno) as "NOMBRE CLIENTE",
+        prof.nombre_prof_ofic as "PROFESION/OFICIO",
+        to_char (cli.fecha_nacimiento, 'dd " de " Month') as "Dia de Cumpleaños"
+from cliente cli
+join profesion_oficio prof
+on cli.cod_prof_ofic = prof.cod_prof_ofic
+order by "Dia de Cumpleaños" asc;
+
+select to_char(cli.numrun,'99G999G999') ||'-'|| cli.dvrun "RUN CLIENTE",
+        cli.pnombre ||' '|| cli.snombre ||' '|| cli.appaterno ||' '|| cli.apmaterno as "NOMBRE CLIENTE",
+        to_char(cred.monto_solicitado,'$9G999G999') "MONTO SOLICITADO CREDITO",
+        to_number(cred.total_cuotas_credito*1200) as "TOTAL PESOS TODOSUMA" -- ARREGLAR AQUI 
+from cliente cli
+join CREDITO_CLIENTE cred
+on cli.Nro_Cliente = cred.nro_cliente
+order by monto_solicitado;
