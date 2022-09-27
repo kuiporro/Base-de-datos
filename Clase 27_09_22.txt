@@ -1,0 +1,80 @@
+select emp.employee_id "ID EMPLEADO", emp.first_name || '' || emp.last_name "NOMBRE EMPLEADO",
+       emp.manager_id "ID JEFE", jefe.first_name || '' || jefe.last_name "NOMBRE JEFE"
+from employees emp join employees jefe
+    on (emp.manager_id = jefe.employee_id)
+order by emp.employee_id;
+
+
+-- Determinar cuantos empleados tiene a cargo un jefe en la tabla employyes
+SELECT man.first_name || ' '  || man.last_name "NOMBRE JEFE", 
+             COUNT(emp.employee_id) "EMPLEADOS A SU CARGO"
+ FROM   employees emp   JOIN  employees man
+      ON (emp.manager_id = man.employee_id)
+GROUP BY man.first_name, man.last_name
+ORDER BY "EMPLEADOS A SU CARGO" DESC, man.last_name ;
+
+
+select *
+from employees e
+join jobs j
+on e.salary between j.min_salary and j.max_salary;
+
+
+-- left outer join
+select emp.first_name, dep.department_name
+from employees emp
+left outer join departments dep -- El left outer join traen a los que no tienen valor
+on emp.department_id = dep.department_id;
+
+-- select count(*) from employees; --Esto sirve para hacer un conteo de personal de la tabla.
+
+-- Rigth outer join
+-- department_id 10-100
+
+select emp.first_name, dep.department_name
+from employees emp
+right outer join departments dep 
+on emp.department_id = dep.department_id;
+
+
+--Full outer join
+
+select emp.first_name, dep.department_name
+from employees emp
+full outer join departments dep 
+on emp.department_id = dep.department_id;
+
+--si empleado(a) no tiene departamento, mostrar "sin departamento"
+--si departamento no tine empleado(a), mostrar "sin empleado(a)"
+
+select nvl(emp.first_name,'Sin empleado(a)'), nvl(dep.department_name, 'Sin Departamento')
+from employees emp
+full outer join departments dep 
+on emp.department_id = dep.department_id;
+--when ases tus momos in sql
+--"el futuro es hoy, oiste viejo2"
+--BUT TE DA PANTALLAZO
+--2kjskj mi lente de kontakto KJSJSKJSS" 
+
+
+select emp.employee_id, dep.department_id, dep.department_name
+from employees emp
+cross join departments dep 
+order by emp.employee_id;
+
+--join mas de 2 tablas
+select emp.first_name, dep.department_name, loc.street_address, loc.city
+from employees emp
+join departments dep on emp.department_id = dep.department_id
+join locations loc on dep.location_id = loc.location_id
+join countries cou on loc.country_id = loc.country_id;
+
+--Join mas de 2 tablas utilizando using
+
+select emp.first_name, dep.department_name, loc.street_address, loc.city
+from employees emp
+join departments dep using (department_id) -- Aqui con el using estamos limitados por el nombre de la columna.
+join locations loc using (location_id)
+join countries cou using (country_id);
+
+
