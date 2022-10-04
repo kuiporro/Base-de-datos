@@ -1,0 +1,89 @@
+-- determinar el salario de Abel
+select * from employees where last_name = 'Abel';
+-- Determinar quien gana mas que abel
+select * from employees where salary > 11000;
+
+-- Ejemplo con subconsulta
+select * from employees
+where salary > (select salary from employees where last_name = 'Abel') -- aqui esta la magia de la subconsulta
+
+-- Determinar quien o quienes poseen el salario maximo
+-- Sin subconsulta
+24000
+select * from employees
+where salary = 24000;
+-- Con subconsulta
+select * from employees
+where salary = (select max(salary) from employees);
+
+-- Determinar quienes ganan un salario mayor que los empleados del departamento 30
+11000
+3100
+2900
+2800
+2600
+2500
+select salary from employees where department_id = 30; -- para consultar
+
+-- ejemplo sin subconsulta
+select * 
+from employees
+where salary > 11000
+and salary >3100
+and salary >2900
+and salary >2800
+and salary >2600
+and salary >2500;
+
+-- ejemplo con subconsulta
+
+select * from employees 
+where salary > (select salary from employees where department_id = 30);
+
+-- IN / ANY / ALL / EXISTS
+
+-- IN
+select * from employees 
+where salary in (select salary from employees where department_id = 30) -- devuelve resultados IGUALES, no mayores no menores.
+
+select * from employees 
+where salary in (11000,3100,2900,2800,2600,2500);
+
+-- ANY
+
+select * from employees 
+where salary > any (11000,3100,2900,2800,2600,2500); -- Devuelve salarios mayores a cualquiera de los valores
+
+
+select * from employees 
+where salary > any (select salary from employees where department_id = 30);
+
+-- ALL 
+-- Respuesta a la pregunta anterior 
+
+select * from employees 
+where salary > all (select salary from employees where department_id = 30);
+
+select * from employees 
+where salary > all (11000,3100,2900,2800,2600,2500); -- aqui devuelve estrictamente valores mayores y de todos.
+
+-- EXISTS
+
+select * from departments
+where exists (select 'hola' from dual);
+
+select * from departments
+where exists (select * from employees where employee_id = 856);
+
+select * from employees emp
+where exists (select * 
+              from departments dep
+              where emp.department_id = dep.department_id);
+
+
+SELECT deptos.id_depto, deptos.total_empleados
+FROM (SELECT department_id id_depto,
+      COUNT(employee_id) total_empleados 
+      FROM employees GROUP BY department_id 
+      HAVING COUNT(employee_id) > 3)deptos
+ORDER BY deptos.id_depto;
