@@ -1,0 +1,155 @@
+SELECT employee_id, first_name, last_name, 
+                    salary, department_id
+FROM employees
+WHERE salary > 12000;
+-----------------------------------------------------------------------------
+SELECT employee_id, first_name, last_name, 
+                   salary, department_id 
+FROM employees
+WHERE department_id = 90;
+-----------------------------------------------------------------------------
+SELECT employee_id, first_name, last_name, 
+                   salary, department_id 
+      FROM employees
+    WHERE department_id = 100;
+-----------------------------------------------------------------------------
+-- UNION
+--  Retorna las filas de ambas consultas después de eliminar las filas duplicadas
+SELECT employee_id, first_name, last_name, 
+       salary, department_id
+FROM employees
+WHERE salary > 12000
+
+Union -- OPERADOR SET, operador para unir una operacion con otra.
+-- Para que esto se cumpla tienen que tener las misma colunmas ambas consultas.
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 90;       
+
+desc employees;
+-----------------------------------------------------------------------------
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id
+FROM employees
+WHERE salary > 12000
+
+union
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 90
+
+union
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 100;
+------------------------------------------------
+
+-- UNION ALL
+-- Retorna las filas de ambas consultas, incluidas todas las filas duplicadas
+
+SELECT employee_id, first_name, last_name, salary, department_id
+FROM employees
+WHERE salary > 12000
+union all
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM employees
+WHERE department_id = 90;
+
+-------------------------------------------------------
+SELECT employee_id, first_name, last_name, 
+       salary, department_id
+FROM employees
+WHERE salary > 12000
+
+union all
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 90
+
+union all
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 100;
+
+----------------------------------
+-- INTERSECT
+-- Retornas todas las filas que se repiten en ambas consultas
+
+SELECT employee_id, first_name, last_name, salary, department_id
+FROM employees
+WHERE salary > 12000
+intersect 
+SELECT employee_id, first_name, last_name, 
+       salary, department_id 
+FROM employees
+WHERE department_id = 90;
+------------------------------
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id
+FROM employees
+WHERE salary > 12000
+
+intersect
+
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM employees
+WHERE department_id = 90
+
+intersect
+
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM employees
+WHERE department_id = 100;
+---------------------------------------------
+-- MINUS
+-- Permite obtener todas las filas de la primera consulta 
+-- que no se encuentran en la segunda consulta
+
+SELECT employee_id, first_name, last_name, 
+       salary, department_id
+FROM employees
+WHERE salary > 12000
+
+minus
+
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM employees
+WHERE department_id = 90
+
+minus
+
+SELECT employee_id, first_name, last_name, salary, department_id 
+FROM employees
+WHERE department_id = 100;
+---------------------------------------------
+SELECT employee_id
+FROM employees
+where salary > 10000
+MINUS
+SELECT employee_id
+FROM job_history
+INTERSECT 
+SELECT employee_id
+FROM employees
+WHERE salary >= (SELECT MAX(salary)FROM employees);
+------------------------------------------------
+SELECT employee_id, job_id, salary
+FROM employees
+UNION
+SELECT employee_id, job_id, 0 -- EL 0 REPRESENTA LA COLUMNA FICTICIA
+FROM job_history;
+
+
+
