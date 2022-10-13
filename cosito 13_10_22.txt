@@ -1,0 +1,13 @@
+select to_char(pac.pac_run,'99G999G999') || '-' || pac.dv_run as "RUT",
+initcap(pac.pnombre) || ' ' || initcap(pac.snombre)|| ' ' || initcap(pac.apaterno) || '  ' ||initcap(pac.amaterno) as "Nombre",
+trunc(months_between(sysdate, pac.fecha_nacimiento)/12) as "AÑOS",
+case when trunc(months_between(sysdate, pac.fecha_nacimiento)/12) > 64 and trunc(months_between(sysdate, pac.fecha_nacimiento)/12) < 70 then 'Le corresponde un 2% de descuento para el año 2023 '
+when trunc(months_between(sysdate, pac.fecha_nacimiento)/12) > 70 and trunc(months_between(sysdate, pac.fecha_nacimiento)/12) < 75 then 'Le corresponde un 5% de descuento para el año 2023'
+when trunc(months_between(sysdate, pac.fecha_nacimiento)/12) > 75 and trunc(months_between(sysdate, pac.fecha_nacimiento)/12) > 80 then 'Le corresponde un 8% de descuento para el año 2023'
+ELSE 'No aplica' 
+END "Calificación de Descuento"
+from paciente pac
+join atencion ate
+on pac.pac_run = ate.pac_run
+where trunc(months_between(sysdate, pac.fecha_nacimiento)/12) > 64
+order by "AÑOS";
