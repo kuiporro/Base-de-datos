@@ -1,0 +1,92 @@
+-----------------------------------------------------------------------------------------------------
+--VISTAS
+---CONSTRUIR VISTA
+--(LA VISTA HACE REFERENCIA A LA TABLA, SE BASA EN LA TABLA ORIGINAL)
+CREATE VIEW view_paises
+ as SELECT * FROM COUNTRIES;
+ 
+ --llamar vista (Creo que simple)
+ select * from view_paises WHERE region_id = 2;
+ 
+ insert into view_paises values ('CL','CHILE',2);
+ 
+ --Borrar vista
+ DROP VIEW view_paises;
+ -----------------------------------------------------
+ --OR REPLACE para poder cambiar LA SELECT
+ CREATE or REPLACE VIEW view_paises
+ as SELECT * FROM COUNTRIES where region_id = 2;
+ 
+ select * from view_paises where country_id in ('BR','AR','CL');
+ 
+ 
+ CREATE OR REPLACE VIEW v_dept_sum (nombre_depto, minsal, maxsal, avgsal)
+AS SELECT d.department_name, MIN(e.salary), MAX(e.salary), ROUND(AVG(e.salary))
+        FROM employees e 
+        JOIN departments d ON (e.department_id = d.department_id)
+        GROUP BY d.department_name;
+        
+SELECT * FROM v_dept_sum;
+
+--LAS VISTAS SE PUEDEN RESTRINGIR, ESTO ES PARA QUE LA LOGICA DE LA VISTA SEA RESPETADA
+
+CREATE OR REPLACE VIEW v_dept30
+AS SELECT *
+    FROM employees
+    WHERE department_id=30
+    WITH CHECK OPTION CONSTRAINT control_v_dept30; -- protege la vista pero solo en el department_id = 30
+
+update v_dept30 set department_id = 10 where employee_id = 115; -- NO DEJA porque se pasa a llevar el department_id (restriccion)
+update v_dept30 set first_name = 'Alex' where employee_id = 115; --SI DEJA 
+
+select * from v_dept30;
+
+--WITH READ ONLY, LA VISTA SOLO SE PUEDE LEER , NO SE PUEDE MODIFICAR POR DML NI NA
+
+CREATE OR REPLACE VIEW v_dept30
+AS SELECT *
+    FROM employees
+    WHERE department_id=30
+    with read only;
+    
+select * from v_dept30;
+
+DELETE FROM v_dept30 where employee_id = 115;
+
+----------------------------------------------------------------------------------------------------------------
+--SECUENCIAS
+
+
+CREATE SEQUENCE seq_dept_deptid --ES UNA MAQUINA QUE AUMENTA NUMERO 
+    INCREMENT BY 10
+    START WITH 280
+    MAXVALUE 9999
+    NOCACHE
+    NOCYCLE;
+    
+SELECT seq_dept_deptid.nextval FROM dual; --VALOR SIGUIENTE
+SELECT seq_dept_deptid.currval FROM dual; -- VALOR ACTUAL
+
+insert into departments values (seq_dept_deptid.nextval,'BI',null,null);
+insert into departments values (seq_dept_deptid.nextval,'Seguridad',null,null);
+
+---ALTER SEQUENCE ALTERA LA SECUENCIA
+
+Alter sequence seq_dept_deptid
+    maxvalue 800
+    cycle;   --SE REINICIA LA SECUENCIA CUANDO EL VALOR LLEGA AL 800, SE INICIA AL VAlOR QUE TIENE COMO "START WITH"
+    
+--eSTA ES UNA PRUEBA 
+select * from view_deptCase;
+
+CREATE OR REPLACE VIEW view_deptCase (nombre_dep, ciudad, pais, total_empleados)
+AS SELECT d.department_name, l.city, c.country_name, count(e.employee_id) 
+        FROM employees e 
+        JOIN departments d ON (e.department_id = d.department_id)
+        JOIN locations l on (d.location_id = l.location_id)
+        JOIN COUNTRIES c on (l.country_id = c.country_id)
+        JOIN regions r on (c.region_id = r.region_id)
+        where r.region_id = 1
+        GROUP BY d.department_name,l.city,c.country_name;
+
+select * from departments;
